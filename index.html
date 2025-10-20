@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>FF ID Gift Neon Demo</title>
+<style>
+body { 
+  font-family: Arial, sans-serif; 
+  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  color:#fff; display:flex; justify-content:center; align-items:center; height:100vh; margin:0;
+  padding:16px; background-size:600% 600%; animation:bgGradient 20s ease infinite;
+}
+@keyframes bgGradient{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+.card{
+  background: linear-gradient(145deg,#1f1c2c,#928dab);
+  padding:30px 25px; border-radius:25px; text-align:center; width:400px;
+  box-shadow:0 0 30px rgba(255,255,255,0.2),0 0 50px rgba(255,255,255,0.2);
+  border:2px solid #fff; position:relative; overflow:hidden;
+}
+
+input{
+  width:100%; padding:12px; margin-bottom:15px; border:none; border-radius:12px;
+  font-size:15px; background:#fff; color:#000; font-weight:bold; transition:all 0.3s ease; text-align:center;
+}
+input::placeholder{color:#999;}
+
+button, .amount-btn{
+  padding:12px 20px; margin:8px; border:none; border-radius:12px;
+  cursor:pointer; font-weight:700; font-size:16px; transition: all 0.3s ease; outline:none;
+}
+button{
+  background:linear-gradient(90deg,#ff6ec4,#7873f5); color:#fff; width:100%; box-shadow:0 0 15px #fff,0 0 30px #fff;
+}
+button:hover{
+  transform:scale(1.05); box-shadow:0 0 25px #fff,0 0 45px #fff;
+}
+
+.amount-btn{
+  background:#111; color:#fff; min-width:60px; font-size:18px; font-weight:bold;
+  text-shadow:0 0 5px #fff,0 0 10px #fff; 
+  box-shadow:0 0 15px #fff,0 0 25px #fff;
+  border:2px solid #fff; transition: all 0.3s ease;
+}
+.amount-btn:hover{
+  transform:scale(1.3);
+  box-shadow:0 0 25px #fff,0 0 50px #fff;
+  color:#fff;
+}
+
+.small{font-size:14px;color:#e0e0e0;margin-bottom:8px;}
+
+/* Glow Effect for Heading and Congratulations (white pulsating) */
+.demo-title, .congrats-text {
+  font-size:36px; font-weight:900; margin-bottom:15px;
+  color:#fff;
+  text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #fff;
+  animation: glowPulse 1.5s ease-in-out infinite, popIn 1s ease forwards;
+}
+
+@keyframes glowPulse{
+  0%,100%{ text-shadow: 0 0 5px #fff,0 0 10px #fff,0 0 20px #fff; }
+  50%{ text-shadow: 0 0 15px #fff,0 0 30px #fff,0 0 40px #fff; }
+}
+
+@keyframes popIn{
+  0%{transform:scale(0);opacity:0;}
+  50%{transform:scale(1.4);opacity:1;}
+  70%{transform:scale(0.95);}
+  100%{transform:scale(1);}
+}
+</style>
+</head>
+<body>
+
+<div class="card" id="stepCard">
+
+  <!-- Step 1: ID Input -->
+  <div id="step1">
+    <h2 class="demo-title">FF ID Gift Demo</h2>
+    <div class="small">अपना Free Fire ID दर्ज करें</div>
+    <input id="ffid" type="text" placeholder="उदा. 123456789" inputmode="numeric" />
+    <button id="idSubmit">Submit</button>
+  </div>
+
+  <!-- Step 2: Amount -->
+  <div id="step2" style="display:none;">
+    <div class="small">Amount चुनें</div>
+    <div id="amountContainer">
+      <button class="amount-btn" data-amount="1K">1K</button>
+      <button class="amount-btn" data-amount="2K">2K</button>
+      <button class="amount-btn" data-amount="3K">3K</button>
+      <button class="amount-btn" data-amount="4K">4K</button>
+      <button class="amount-btn" data-amount="5K">5K</button>
+    </div>
+  </div>
+
+  <!-- Step 3: Congratulations -->
+  <div id="step3" style="display:none;">
+    <div class="congrats-text">🎉 Congratulations!</div>
+    <div style="font-size:18px;margin-bottom:12px;color:#fff6e5;">ID <strong id="finalID"></strong> सफलतापूर्वक सबमिट हो गया।</div>
+    <div style="font-size:17px;color:#fff6e5;">चुना गया Amount: <strong id="finalAmt"></strong></div>
+    <button onclick="location.reload()">Back</button>
+  </div>
+
+</div>
+
+<script>
+const ffidInput = document.getElementById('ffid');
+
+// केवल नंबर की अनुमति
+ffidInput.addEventListener('input', e => e.target.value = e.target.value.replace(/[^0-9]/g,'').slice(0,12));
+
+// Step 1 Submit
+document.getElementById('idSubmit').addEventListener('click', function(){
+  const id = ffidInput.value.trim();
+  if(id===''){ alert('कृपया Free Fire ID डालें'); return; }
+  document.getElementById('step1').style.display='none';
+  document.getElementById('step2').style.display='block';
+});
+
+// Step 2 Amount Buttons
+const amountBtns = document.querySelectorAll('.amount-btn');
+amountBtns.forEach(btn => {
+  btn.addEventListener('click', function(){
+    const amount = this.getAttribute('data-amount');
+    document.getElementById('finalID').innerText = ffidInput.value.trim();
+    document.getElementById('finalAmt').innerText = amount;
+    document.getElementById('step2').style.display='none';
+    document.getElementById('step3').style.display='block';
+  });
+});
+</script>
+
+</body>
+</html>
